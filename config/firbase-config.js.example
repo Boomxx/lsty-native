@@ -1,0 +1,10 @@
+//Get from firebase console
+
+export default {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: ""
+};
