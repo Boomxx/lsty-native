@@ -31,10 +31,9 @@ class LoginScreen extends React.Component {
     password: ""
   };
 
-  async componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.user) {
-      await AsyncStorage.setItem("user", JSON.stringify(nextProps.user));
-      this.props.navigation.goBack();
+      this.props.navigation.navigate("Lists");
     }
   }
 

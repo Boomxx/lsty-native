@@ -9,20 +9,24 @@ import { setUser } from "../../state/actions/Auth";
 class MainScreen extends React.Component {
   static navigationOptions = {
     headerTitle: "lsty",
+    headerLeft: null,
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-list" style={{ color: tintColor }} />
     )
   };
 
   async componentWillMount() {
-    await AsyncStorage.clear();
-    const userJSON = await AsyncStorage.getItem("user");
+    try {
+      const userJSON = await AsyncStorage.getItem("user");
 
-    if (!userJSON) {
-      this.props.navigation.navigate("Login");
-    } else {
-      const user = JSON.parse(userJSON);
-      this.props.setUser(user);
+      if (!userJSON) {
+        this.props.navigation.navigate("Login");
+      } else {
+        const user = JSON.parse(userJSON);
+        this.props.setUser(user);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -30,7 +34,7 @@ class MainScreen extends React.Component {
     return (
       <Container>
         <Text>Main Screen</Text>
-        {this.props.user && <Text>User: {this.props.user.email}</Text>}
+        {this.props.user && <Text>User: {this.props.user.uid}</Text>}
       </Container>
     );
   }

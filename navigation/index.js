@@ -4,6 +4,7 @@ import { StackNavigator, TabNavigator } from "react-navigation";
 import MainScreen from "../screens/Main/MainScreen";
 import LoginScreen from "../screens/Login/LoginScreen";
 import SharesScreen from "../screens/Shares/SharesScreen";
+import AccountScreen from "../screens/Account/AccountScreen";
 
 export default StackNavigator({
   Main: {
@@ -13,6 +14,9 @@ export default StackNavigator({
       },
       Shares: {
         screen: SharesScreen
+      },
+      Account: {
+        screen: AccountScreen
       }
     })
   },

@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 class SharesScreen extends React.Component {
   static navigationOptions = {
     headerTitle: "Shares",
+    headerLeft: null,
     tabBarIcon: ({ tintColor }) => (
       <Icon name="md-share" style={{ color: tintColor }} />
     )
