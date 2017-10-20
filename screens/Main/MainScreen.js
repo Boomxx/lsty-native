@@ -5,6 +5,7 @@ import { Container, Text, Icon } from "native-base";
 import { connect } from "react-redux";
 
 import { setUser } from "../../state/actions/Auth";
+import { addListsListener } from "../../state/actions/List";
 
 class MainScreen extends React.Component {
   static navigationOptions = {
@@ -24,10 +25,15 @@ class MainScreen extends React.Component {
       } else {
         const user = JSON.parse(userJSON);
         this.props.setUser(user);
+        this.props.addListsListener(user.uid);
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  componentWillUnmount() {
+    console.log("unmounting");
   }
 
   render() {
@@ -35,13 +41,16 @@ class MainScreen extends React.Component {
       <Container>
         <Text>Main Screen</Text>
         {this.props.user && <Text>User: {this.props.user.uid}</Text>}
+        {this.props.lists && <Text>{JSON.stringify(this.props.lists)}</Text>}
       </Container>
     );
   }
 }
 
-const mapStateToProps = ({ AuthState }) => {
-  return { ...AuthState };
+const mapStateToProps = ({ AuthState, ListState }) => {
+  return { ...AuthState, ...ListState };
 };
 
-export default connect(mapStateToProps, { setUser })(MainScreen);
+export default connect(mapStateToProps, { setUser, addListsListener })(
+  MainScreen
+);
