@@ -1,7 +1,19 @@
 import React from "react";
-import Expo from "expo";
-import { StyleSheet, AsyncStorage } from "react-native";
-import { Container, Text, Icon } from "native-base";
+import Expo, { AppLoading } from "expo";
+import { StyleSheet, AsyncStorage, ListView } from "react-native";
+import {
+  Container,
+  Header,
+  Content,
+  Button,
+  Icon,
+  List,
+  ListItem,
+  Text,
+  Right,
+  Body,
+  Badge
+} from "native-base";
 import { connect } from "react-redux";
 
 import { setUser } from "../../state/actions/Auth";
@@ -15,6 +27,10 @@ class MainScreen extends React.Component {
       <Icon name="md-list" style={{ color: tintColor }} />
     )
   };
+
+  ds = new ListView.DataSource({
+    rowHasChanged: (r1, r2) => r1 !== r2
+  });
 
   async componentWillMount() {
     try {
@@ -32,16 +48,50 @@ class MainScreen extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log("unmounting");
-  }
+  renderLists = () => {
+    if (!this.props.lists) {
+      return <AppLoading />;
+    }
+
+    return (
+      <List
+        dataSource={this.ds.cloneWithRows(this.props.lists)}
+        renderRow={list => (
+          <ListItem>
+            <Body>
+              <Text> {list.name} </Text>
+            </Body>
+            <Right>
+              <Badge primary>
+                <Text>{list.unchecked.count}</Text>
+              </Badge>
+            </Right>
+          </ListItem>
+        )}
+        renderLeftHiddenRow={data => (
+          <Button full onPress={() => alert(list.name)}>
+            <Icon active name="information-circle" />
+          </Button>
+        )}
+        renderRightHiddenRow={(data, secId, rowId, rowMap) => (
+          <Button
+            full
+            danger
+            onPress={_ => this.deleteRow(secId, rowId, rowMap)}
+          >
+            <Icon active name="trash" />
+          </Button>
+        )}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+      />
+    );
+  };
 
   render() {
     return (
       <Container>
-        <Text>Main Screen</Text>
-        {this.props.user && <Text>User: {this.props.user.uid}</Text>}
-        {this.props.lists && <Text>{JSON.stringify(this.props.lists)}</Text>}
+        <Content>{this.renderLists()}</Content>
       </Container>
     );
   }

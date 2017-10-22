@@ -22,7 +22,6 @@ export const login = (email, password) => {
         .signInWithEmailAndPassword(email, password);
 
       await firebase.auth().setPersistence("local");
-
       await storage.setItem("user", JSON.stringify(user));
       dispatch(loginSuccess(user));
     } catch (error) {
