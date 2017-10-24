@@ -1,20 +1,9 @@
 import React from "react";
 import Expo, { AppLoading } from "expo";
 import { StyleSheet, AsyncStorage, ListView } from "react-native";
-import {
-  Container,
-  Header,
-  Content,
-  Button,
-  Icon,
-  List,
-  ListItem,
-  Text,
-  Right,
-  Body,
-  Badge
-} from "native-base";
+import { Container, Content, Icon } from "native-base";
 import { connect } from "react-redux";
+import ListCollection from "./components/ListCollection";
 
 import { setUser } from "../../state/actions/Auth";
 import { addListsListener } from "../../state/actions/List";
@@ -27,10 +16,6 @@ class MainScreen extends React.Component {
       <Icon name="md-list" style={{ color: tintColor }} />
     )
   };
-
-  ds = new ListView.DataSource({
-    rowHasChanged: (r1, r2) => r1 !== r2
-  });
 
   async componentWillMount() {
     try {
@@ -49,43 +34,13 @@ class MainScreen extends React.Component {
   }
 
   renderLists = () => {
-    if (!this.props.lists) {
+    const { lists, navigation } = this.props;
+
+    if (!lists) {
       return <AppLoading />;
     }
 
-    return (
-      <List
-        dataSource={this.ds.cloneWithRows(this.props.lists)}
-        renderRow={list => (
-          <ListItem>
-            <Body>
-              <Text> {list.name} </Text>
-            </Body>
-            <Right>
-              <Badge primary>
-                <Text>{list.unchecked.count}</Text>
-              </Badge>
-            </Right>
-          </ListItem>
-        )}
-        renderLeftHiddenRow={data => (
-          <Button full onPress={() => alert(list.name)}>
-            <Icon active name="information-circle" />
-          </Button>
-        )}
-        renderRightHiddenRow={(data, secId, rowId, rowMap) => (
-          <Button
-            full
-            danger
-            onPress={_ => this.deleteRow(secId, rowId, rowMap)}
-          >
-            <Icon active name="trash" />
-          </Button>
-        )}
-        leftOpenValue={75}
-        rightOpenValue={-75}
-      />
-    );
+    return <ListCollection lists={lists} navigation={navigation} />;
   };
 
   render() {
