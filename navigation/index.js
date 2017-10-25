@@ -30,7 +30,7 @@ export default StackNavigator({
   List: {
     screen: ListScreen,
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.listName
+      title: navigation.state.params.list.name
     })
   }
 });

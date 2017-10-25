@@ -5,6 +5,7 @@ import { AsyncStorage as storage } from "react-native";
 
 import AuthReducer from "./reducers/Auth";
 import ListReducer from "./reducers/List";
+import ItemReducer from "./reducers/Item";
 
 const createStoreWithMiddleware = applyMiddleware(
   thunk.withExtraArgument({ firebase, storage })
@@ -12,7 +13,8 @@ const createStoreWithMiddleware = applyMiddleware(
 
 const reducers = combineReducers({
   AuthState: AuthReducer,
-  ListState: ListReducer
+  ListState: ListReducer,
+  ItemState: ItemReducer
 });
 
 const store = createStoreWithMiddleware(reducers);

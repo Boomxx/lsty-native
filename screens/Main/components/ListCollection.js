@@ -23,10 +23,7 @@ export default props => {
     <List
       dataSource={ds.cloneWithRows(props.lists)}
       renderRow={list => (
-        <ListItem
-          onPress={() =>
-            props.navigation.navigate("List", { listName: list.name })}
-        >
+        <ListItem onPress={() => props.navigation.navigate("List", { list })}>
           <Body>
             <Text> {list.name} </Text>
           </Body>
