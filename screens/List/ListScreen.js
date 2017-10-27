@@ -21,7 +21,20 @@ class ListScreen extends React.Component {
 
   renderItems = () => {
     if (this.props.items) {
-      return <ItemCollection items={this.props.items} />;
+      const { state: { params: { list } } } = this.props.navigation;
+      const uncheckedCount = _.filter(this.props.items, ["got", false]).length;
+
+      return (
+        <ItemCollection
+          items={this.props.items}
+          user={this.props.user}
+          list={list}
+          onToggle={item =>
+            this.props.toggleItem(list.id, item, uncheckedCount)}
+          onDelete={item =>
+            this.props.deleteItem(list.id, item, uncheckedCount)}
+        />
+      );
     }
   };
 
