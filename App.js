@@ -1,5 +1,6 @@
 import React from "react";
 import { Provider } from "react-redux";
+import { Root } from "native-base";
 import firebase from "firebase";
 
 import config from "./config/firebase-config";
@@ -14,9 +15,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <Provider store={store}>
-        <Navigation />
-      </Provider>
+      <Root>
+        <Provider store={store}>
+          <Navigation />
+        </Provider>
+      </Root>
     );
   }
 }

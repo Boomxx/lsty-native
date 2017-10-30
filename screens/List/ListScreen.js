@@ -1,14 +1,45 @@
 import React from "react";
 import Expo from "expo";
 import { StyleSheet } from "react-native";
-import { Container, Text, List, ListItem, Content } from "native-base";
+import {
+  Container,
+  Text,
+  List,
+  ListItem,
+  Content,
+  Button,
+  Icon,
+  ActionSheet
+} from "native-base";
 import { connect } from "react-redux";
 
 import ItemCollection from "./components/ItemCollection";
-
 import * as actions from "../../state/actions/Item";
 
+const BUTTONS = ["Add Items", "Clear Checked", "Cancel"];
+const CANCEL_INDEX = 2;
+
 class ListScreen extends React.Component {
+  static navigationOptions = {
+    headerRight: (
+      <Button
+        transparent
+        onPress={() => {
+          ActionSheet.show(
+            {
+              options: BUTTONS,
+              cancelButtonIndex: CANCEL_INDEX,
+              title: "Options"
+            },
+            index => {}
+          );
+        }}
+      >
+        <Icon active name="ios-menu" />
+      </Button>
+    )
+  };
+
   componentWillMount() {
     const { addItemsListener, navigation } = this.props;
     addItemsListener(navigation.state.params.list.id);
@@ -20,13 +51,14 @@ class ListScreen extends React.Component {
   }
 
   renderItems = () => {
-    if (this.props.items) {
+    if (this.props.items && this.props.items.length > 0) {
       const { state: { params: { list } } } = this.props.navigation;
       const uncheckedCount = _.filter(this.props.items, ["got", false]).length;
+      const items = _.sortBy(this.props.items, ["got", "name"]);
 
       return (
         <ItemCollection
-          items={this.props.items}
+          items={items}
           user={this.props.user}
           list={list}
           onToggle={item =>
